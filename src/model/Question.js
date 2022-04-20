@@ -1,14 +1,21 @@
 //
 class Question {
-  constructor(questionByLevel) {
-    this.questions = questionByLevel
+  constructor(questionsByLevel) {
+    this.question = this.getRandomQuestion(questionsByLevel)
   }
 
-  getQuestions() {
-    return this.questions
+  #getQuestions() {
+    return this.question
   }
 
-  // get;
+  getRandomQuestion(questionArray) {
+    const random = this.#generateRandomNumber(questionArray.length)
+    return questionArray[random]
+  }
+
+  #generateRandomNumber(n) {
+    return Math.floor(Math.random() * n)
+  }
 }
 
 export default Question
