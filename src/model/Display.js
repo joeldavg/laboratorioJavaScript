@@ -110,12 +110,14 @@ class Display {
     const tBody = document.createElement('tbody')
     tBody.id = 'tbody'
     console.log(histories)
+    let position = 1
     for (let i = 0; i < histories.length; i++) {
-      file += `<tr><td>${i + 1}</td>
+      file += `<tr><td>${position}</td>
                     <td>${histories[i].showScore()}</td>
                     <td>${histories[i].getPlayer().getNickname()}</td>
                      <td>${histories[i].getCurrentLevel() + 1}</td>
                      <td>${histories[i].showScore()}</td></tr>`
+      position++
     }
     /*for (let i = 0; i < histories.length; i++) {
       console.log(`placement ${i + 1}`)
@@ -132,7 +134,8 @@ class Display {
     tHead.appendChild(tr)
     table.appendChild(tHead)
     table.appendChild(tBody)
-    document.querySelector('#tbody').innerHTML = file
+    tBody.innerHTML = file
+
     innerRoot.appendChild(h5)
     innerRoot.appendChild(table)
     root.appendChild(innerRoot)

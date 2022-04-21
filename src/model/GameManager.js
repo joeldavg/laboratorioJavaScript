@@ -40,14 +40,14 @@ class GameManager {
 
   startGameButtonCallback() {
     console.log('game manager start game')
-    const nHistory = new History()
-    const nDisplay = new Display()
-    nDisplay.historyScreen(nHistory)
   }
 
   historyButtonCallback() {
     console.log('game manager history')
-    // this.#display.
+    // this.#display.historyScreen(this.#history)
+    const nHistory = new History()
+    const nDisplay = new Display()
+    nDisplay.historyScreen(nHistory)
   }
 
   retireWithPoints() {

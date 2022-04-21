@@ -8,20 +8,23 @@ import Display from './model/Display.js'
 import GameManger from './model/GameManager.js'
 
 function main() {
+  // take this out to a file
+  const mainGame = new Game()
   const gameManager = new GameManger()
   gameManager.startNewGame('david')
-  // const player = new Player('david')
-  // const player2 = new Player('juan')
-  // const game = new Game(questions, player)
-  // const game2 = new Game(questions, player2)
-  // const displayGame = new Display()
-  // const history = new History()
-  // history.insertHistory(game)
-  // history.insertHistory(game2)
-  // history.saveToLocalStorage()
-  // // console.log(history.getHistory())
-  // // displayGame.questionScreen(game)
-  // displayGame.historyScreen(history)
 }
 
 main()
+
+// const player = new Player('david')
+// const player2 = new Player('juan')
+// const game = new Game(questions, player)
+// const game2 = new Game(questions, player2)
+// const displayGame = new Display()
+// const history = new History()
+// history.insertHistory(game)
+// history.insertHistory(game2)
+// history.saveToLocalStorage()
+// // console.log(history.getHistory())
+// // displayGame.questionScreen(game)
+// displayGame.historyScreen(history)
