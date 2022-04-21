@@ -1,9 +1,9 @@
 // select div from DOM
 
 class Display {
-  //
+  #userAnswer
   constructor() {
-    //
+    this.#userAnswer = ''
     // this.root = div from DOM
   }
   // methods to manage the ui
@@ -18,9 +18,41 @@ class Display {
     return innerRoot
   }
 
+  #generateCardTitle() {
+    const cardTitle = document.createElement('h5')
+    cardTitle.classList.add('card-title')
+    return cardTitle
+  }
+
+  #generateCardText() {
+    const cardText = document.createElement('p')
+    cardText.classList.add('card-text')
+    return cardText
+  }
+
+  #generateContinueButton() {
+    const continueButton = document.createElement('button')
+    continueButton.classList.add('btn', 'btn-success')
+    return continueButton
+  }
+
+  #generateAnswerButton(buttonText) {
+    const answerButton = document.createElement('button')
+    answerButton.classList.add('list-group-item', 'list-group-item-action')
+    answerButton.innerText = buttonText
+    answerButton.value = buttonText
+    return answerButton
+  }
+
   #selectRootReference() {
     const root = document.querySelector('#root')
     return root
+  }
+
+  #generateTableHead(thText) {
+    const th = document.createElement('th')
+    th.innerText = thText
+    return th
   }
 
   welcomeScreen() {
@@ -28,56 +60,65 @@ class Display {
     const root = this.#selectRootReference()
     const innerRoot = this.#generateInnerRoot()
 
-    const h5 = document.createElement('h5')
-    h5.classList.add('card-title')
-    h5.innerText = 'WELCOME'
+    const cardTitle = this.#generateCardTitle()
+    cardTitle.innerText = 'WELCOME'
 
-    const p = document.createElement('p')
-    p.classList.add('card-text')
-    p.innerText = this.#welcomeMessage()
+    const cardText = this.#generateCardText()
+    cardText.innerText = this.#welcomeMessage()
 
-    const divBtn = document.createElement('div')
-    divBtn.classList.add('d-flex', 'justify-content-between')
+    const divButton = document.createElement('div')
+    divButton.classList.add('d-flex', 'justify-content-between')
 
-    const btn1 = document.createElement('button')
-    btn1.classList.add('btn', 'btn-info')
-    btn1.innerText = 'GAME HISTORY'
+    const gameHistoryButton = document.createElement('button')
+    gameHistoryButton.classList.add('btn', 'btn-info')
+    gameHistoryButton.innerText = 'GAME HISTORY'
 
-    const btn2 = document.createElement('button')
-    btn2.classList.add('btn', 'btn-success')
-    btn2.innerHTML = 'START GAME'
+    const startGameButton = this.#generateContinueButton()
+    startGameButton.innerHTML = 'START GAME'
 
-    divBtn.append(btn1)
-    divBtn.append(btn2)
-    innerRoot.append(h5)
-    innerRoot.append(p)
-    innerRoot.append(divBtn)
+    divButton.append(gameHistoryButton)
+    divButton.append(startGameButton)
+    innerRoot.append(cardTitle)
+    innerRoot.append(cardText)
+    innerRoot.append(divButton)
     root.append(innerRoot)
   }
 
   historyScreen(history) {
+    const histories = history.getHistory()
+    let file
     // history [ game ]
     this.erase()
     const root = this.#selectRootReference()
     const innerRoot = this.#generateInnerRoot()
-    const h5 = document.createElement('h5')
-    h5.classList.add('card-title')
+    const h5 = this.#generateCardTitle()
     h5.innerText = 'HISTORIAL DE PARTIDAS'
     const table = document.createElement('table')
     table.classList.add('table')
     const tHead = document.createElement('thead')
     const tr = document.createElement('tr')
-    const th1 = document.createElement('th')
-    th1.innerHTML = '#'
-    const th2 = document.createElement('th')
-    th2.innerHTML = 'Total Points'
-    const th3 = document.createElement('th')
-    th3.innerHTML = 'Player Nick'
-    const th4 = document.createElement('th')
-    th4.innerHTML = 'Max Round'
-    const th5 = document.createElement('th')
-    th5.innerHTML = 'Won?'
+    const th1 = this.#generateTableHead('#')
+    const th2 = this.#generateTableHead('Total Points')
+    const th3 = this.#generateTableHead('Player Nick')
+    const th4 = this.#generateTableHead('Max Round')
+    const th5 = this.#generateTableHead('Won?')
     const tBody = document.createElement('tbody')
+    tBody.id = 'tbody'
+    console.log(histories)
+    for (let i = 0; i < histories.length; i++) {
+      file += `<tr><td>${i + 1}</td>
+                    <td>${histories[i].showScore()}</td>
+                    <td>${histories[i].getPlayer().getNickname()}</td>
+                     <td>${histories[i].getCurrentLevel() + 1}</td>
+                     <td>${histories[i].showScore()}</td></tr>`
+    }
+    /*for (let i = 0; i < histories.length; i++) {
+      console.log(`placement ${i + 1}`)
+      console.log(histories[i].getPlayer().getNickname()) // player name
+      console.log(histories[i].getCurrentLevel() + 1) // current level
+      console.log(histories[i].showScore())
+      console.log(histories[i].getPlayer().getGameResult())
+    }*/
     tr.appendChild(th1)
     tr.appendChild(th2)
     tr.appendChild(th3)
@@ -86,9 +127,14 @@ class Display {
     tHead.appendChild(tr)
     table.appendChild(tHead)
     table.appendChild(tBody)
+    document.querySelector('#tbody').innerHTML = file
     innerRoot.appendChild(h5)
     innerRoot.appendChild(table)
     root.appendChild(innerRoot)
+
+    //const tBodyDOM = document.querySelector('#tbody')
+    //tBodyDOM.innerHTML = file
+    // console.log(tBodyDOM)
   }
 
   #welcomeMessage() {
@@ -97,18 +143,80 @@ class Display {
   }
 
   questionScreen(game) {
-    // const currentQuestion = game.getCurrrentQuestion()
+    this.erase()
+    const root = this.#selectRootReference()
+    const innerRoot = this.#generateInnerRoot()
+
+    // currentLevel
+    const currentQuestion = game.getCurrentQuestion()
+    // const question = currentQuestion.getQuestion()
+    const questionText = currentQuestion.getQuestionTitle()
+    const answersArray = currentQuestion.getAnswersArray()
+
+    const cardTitle = this.#generateCardTitle()
+    cardTitle.innerText = `LEVEL ${game.getCurrentLevel() + 1}`
+
+    const cardText = this.#generateCardText()
+    cardText.classList.add('fw-bold')
+    // console.log(question)
+    cardText.innerText = questionText
+
+    const divAnswerButton = document.createElement('div')
+    divAnswerButton.classList.add('list-group')
+
+    for (let answer of answersArray) {
+      const answerButton = this.#generateAnswerButton(answer)
+      // answerButton.innerText = button.value = answers
+      answerButton.addEventListener('click', function () {
+        console.log(this.value)
+      })
+      divAnswerButton.append(answerButton)
+    }
+    // agrega div al padre
+    innerRoot.append(cardTitle)
+    innerRoot.append(cardText)
+    innerRoot.append(divAnswerButton)
+    root.append(innerRoot)
+  }
+
+  #userChosenAnswer() {
+    this.#userAnswer = this.value
+  }
+
+  getUserAnswer() {
+    return this.#userAnswer
   }
 
   winnerScreen() {}
 
-  loserScreen() {}
+  loserScreen() {
+    this.erase()
+    const root = this.#selectRootReference()
+    const innerRoot = this.#generateInnerRoot()
+
+    const cardTitle = this.#generateCardTitle()
+    cardTitle.classList.add('alert', 'alert-danger')
+    cardTitle.innerText = 'INCORRECT ANSWER'
+
+    const cardText = this.#generateCardText()
+    cardText.classList.add('fw-bold')
+    cardText.innerText = 'Thanks for playing! You can try again.'
+
+    const finishButton = document.createElement('button')
+    finishButton.classList.add('btn', 'btn-danger')
+    finishButton.innerText = 'FINISH'
+
+    innerRoot.append(cardTitle)
+    innerRoot.append(cardText)
+    innerRoot.append(finishButton)
+    root.append(innerRoot)
+  }
 
   continueScreen() {}
 
   erase() {
     const innerRoot = document.querySelector('#inner-root')
-    console.log(innerRoot)
+    // console.log(innerRoot)
     if (innerRoot) {
       innerRoot.remove()
     }

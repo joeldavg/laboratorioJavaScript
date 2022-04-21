@@ -16,7 +16,7 @@ class Player {
     return this.#nickname
   }
 
-  getWon() {
+  getGameResult() {
     return this.#won
   }
 

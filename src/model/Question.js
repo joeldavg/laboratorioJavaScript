@@ -5,8 +5,16 @@ class Question {
     this.#question = this.getRandomQuestion(questionsByLevel)
   }
 
-  getQuestions() {
+  getQuestion() {
     return this.#question
+  }
+
+  getQuestionTitle() {
+    return this.#question.question
+  }
+
+  getAnswersArray() {
+    return this.#question.answers
   }
 
   getRandomQuestion(questionArray) {

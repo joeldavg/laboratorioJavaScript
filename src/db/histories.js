@@ -3,7 +3,7 @@ export const histories = [
     id: '1',
     totalPoints: '500',
     gameWon: 'false',
-    playerId: '2',
+    player: 'David',
     maxRound: 'levelFive',
   },
 ]
