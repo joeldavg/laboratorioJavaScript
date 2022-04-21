@@ -10,7 +10,6 @@ import GameManger from './model/GameManager.js'
 function main() {
   const gameManager = new GameManger()
   gameManager.startNewGame('david')
-  gameManager.testShowGame()
   // const player = new Player('david')
   // const player2 = new Player('juan')
   // const game = new Game(questions, player)

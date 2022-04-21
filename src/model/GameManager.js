@@ -10,8 +10,8 @@ import History from './History.js'
 import Player from './Player.js'
 import Question from './Question.js'
 
-// GameManger which deals with Game and Display classes
-class GameManger {
+// GameManager which deals with Game and Display classes
+class GameManager {
   #game
   #display
   #history
@@ -30,26 +30,41 @@ class GameManger {
       new Question(levelFive),
     ]
     this.#game = new Game(questions, new Player(nickname))
+    this.#display.welcomeScreen(this.startGameButtonCallback, this.historyButtonCallback)
   }
 
-  testShowGame() {
-    console.log(this.#game)
+  continueWithNextQuestion() {
+    this.#game.continueGame()
+    this.#display.continueScreen()
   }
 
-  // doesContinue() {
-  //   const userResponse = confirm('Continue or retire')
-  //   // this.game.continueOrRetire(userResponse)
-  // }
+  startGameButtonCallback() {
+    console.log('game manager start game')
+    const nHistory = new History()
+    const nDisplay = new Display()
+    nDisplay.historyScreen(nHistory)
+  }
+
+  historyButtonCallback() {
+    console.log('game manager history')
+    // this.#display.
+  }
+
+  retireWithPoints() {
+    // const currentSession = this.#game.retireWithCurrentPoints()
+    // this.#history.insertHistory(currentSession)
+    // this.#history.saveToLocalStorage()
+    // return user to the main screen (and reset the whole game) or refresh the page
+  }
 
   checkUserAnswer() {
     // use display to get the userAnswer
-    const userAnswer = this.#display.userChosenAnswer()
-
-    const isCorrect = this.#game.validateAnswer(userAnswer)
-    if (isCorrect) {
-    }
+    // const userAnswer = this.#display.getUserAnswer()
+    // const isCorrect = this.#game.validateAnswer(userAnswer)
+    // if (isCorrect) {
+    // }
   }
   // methods to manage both the ui and the logic
 }
 
-export default GameManger
+export default GameManager

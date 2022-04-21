@@ -14,6 +14,10 @@ class Game {
     this.#score = 0
   }
 
+  // IMPORTANT
+  // a method that returns the current state of the game so it can be recreated
+  //
+
   // could take a callback to be use when inside GameManager
   validateAnswer(userInput) {
     this.#player.addAnswerChosen(userInput)

@@ -2,8 +2,10 @@
 
 class Display {
   #userAnswer
+  #nickname
   constructor() {
     this.#userAnswer = ''
+    this.#nickname = ''
     // this.root = div from DOM
   }
   // methods to manage the ui
@@ -55,7 +57,7 @@ class Display {
     return th
   }
 
-  welcomeScreen() {
+  welcomeScreen(startButtonCallback, historyButtonCallback) {
     this.erase()
     const root = this.#selectRootReference()
     const innerRoot = this.#generateInnerRoot()
@@ -72,9 +74,12 @@ class Display {
     const gameHistoryButton = document.createElement('button')
     gameHistoryButton.classList.add('btn', 'btn-info')
     gameHistoryButton.innerText = 'GAME HISTORY'
+    gameHistoryButton.addEventListener('click', historyButtonCallback)
 
     const startGameButton = this.#generateContinueButton()
-    startGameButton.innerHTML = 'START GAME'
+    startGameButton.innerText = 'START GAME'
+    // pass a callback from GameManager
+    startGameButton.addEventListener('click', startButtonCallback)
 
     divButton.append(gameHistoryButton)
     divButton.append(startGameButton)
@@ -85,10 +90,10 @@ class Display {
   }
 
   historyScreen(history) {
+    this.erase()
+    console.log('should have deleted')
     const histories = history.getHistory()
     let file
-    // history [ game ]
-    this.erase()
     const root = this.#selectRootReference()
     const innerRoot = this.#generateInnerRoot()
     const h5 = this.#generateCardTitle()
@@ -168,18 +173,20 @@ class Display {
       const answerButton = this.#generateAnswerButton(answer)
       // answerButton.innerText = button.value = answers
       answerButton.addEventListener('click', function () {
+        // logic here to manage user Answer
+        // userChosenAnswer()
+        // this.#userAnswer = this.value
         console.log(this.value)
       })
       divAnswerButton.append(answerButton)
     }
-    // agrega div al padre
     innerRoot.append(cardTitle)
     innerRoot.append(cardText)
     innerRoot.append(divAnswerButton)
     root.append(innerRoot)
   }
 
-  #userChosenAnswer() {
+  userChosenAnswer() {
     this.#userAnswer = this.value
   }
 
@@ -216,8 +223,8 @@ class Display {
 
   erase() {
     const innerRoot = document.querySelector('#inner-root')
-    // console.log(innerRoot)
     if (innerRoot) {
+      console.log(innerRoot)
       innerRoot.remove()
     }
   }
