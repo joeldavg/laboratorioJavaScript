@@ -9,7 +9,7 @@ import GameManger from './model/GameManager.js'
 
 function main() {
   // take this out to a file
-  const mainGame = new Game()
+
   const gameManager = new GameManger()
   gameManager.startNewGame('david')
 }

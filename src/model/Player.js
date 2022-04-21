@@ -7,6 +7,7 @@ class Player {
     this.#nickname = nickname
     this.#won = false
     this.#answers = []
+    // 0
   }
 
   // move this to a generic Class (auxiliary class)
@@ -25,7 +26,7 @@ class Player {
   }
 
   addAnswerChosen(answer) {
-    this.answerChosen.push(answer)
+    this.#answers.push(answer)
   }
 
   getCurrentAnswerByLevel(level) {

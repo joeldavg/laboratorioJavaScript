@@ -1,13 +1,7 @@
-// select div from DOM
+import History from './History.js'
 
 class Display {
-  #userAnswer
-  #nickname
-  constructor() {
-    this.#userAnswer = ''
-    this.#nickname = ''
-    // this.root = div from DOM
-  }
+  constructor() {}
   // methods to manage the ui
   // they should generate the html markup
   // those methods take the game instance as an argument
@@ -91,8 +85,8 @@ class Display {
 
   historyScreen(history) {
     this.erase()
-    console.log('should have deleted')
     const histories = history.getHistory()
+    console.log(histories)
     let file
     const root = this.#selectRootReference()
     const innerRoot = this.#generateInnerRoot()
@@ -109,23 +103,14 @@ class Display {
     const th5 = this.#generateTableHead('Won?')
     const tBody = document.createElement('tbody')
     tBody.id = 'tbody'
-    console.log(histories)
-    let position = 1
+
     for (let i = 0; i < histories.length; i++) {
       file += `<tr><td>${position}</td>
-                    <td>${histories[i].showScore()}</td>
-                    <td>${histories[i].getPlayer().getNickname()}</td>
-                     <td>${histories[i].getCurrentLevel() + 1}</td>
-                     <td>${histories[i].showScore()}</td></tr>`
-      position++
+                      <td>${histories[i].showScore()}</td>
+                      <td>${histories[i].getPlayer().getNickname()}</td>
+                       <td>${histories[i].getCurrentLevel() + 1}</td>
+                       <td>${histories[i].showScore()}</td></tr>`
     }
-    /*for (let i = 0; i < histories.length; i++) {
-      console.log(`placement ${i + 1}`)
-      console.log(histories[i].getPlayer().getNickname()) // player name
-      console.log(histories[i].getCurrentLevel() + 1) // current level
-      console.log(histories[i].showScore())
-      console.log(histories[i].getPlayer().getGameResult())
-    }*/
     tr.appendChild(th1)
     tr.appendChild(th2)
     tr.appendChild(th3)
@@ -133,16 +118,13 @@ class Display {
     tr.appendChild(th5)
     tHead.appendChild(tr)
     table.appendChild(tHead)
-    table.appendChild(tBody)
+    if (tBody.childNodes.length > 0) {
+      table.appendChild(tBody)
+    }
     tBody.innerHTML = file
-
     innerRoot.appendChild(h5)
     innerRoot.appendChild(table)
     root.appendChild(innerRoot)
-
-    //const tBodyDOM = document.querySelector('#tbody')
-    //tBodyDOM.innerHTML = file
-    // console.log(tBodyDOM)
   }
 
   #welcomeMessage() {
@@ -152,6 +134,7 @@ class Display {
 
   questionScreen(game) {
     this.erase()
+    const history = new History()
     const root = this.#selectRootReference()
     const innerRoot = this.#generateInnerRoot()
 
@@ -174,13 +157,30 @@ class Display {
 
     for (let answer of answersArray) {
       const answerButton = this.#generateAnswerButton(answer)
-      // answerButton.innerText = button.value = answers
       answerButton.addEventListener('click', function () {
-        // logic here to manage user Answer
-        // userChosenAnswer()
-        // this.#userAnswer = this.value
-        console.log(this.value)
+        const isCorrect = game.validateAnswer(this.value)
+        const currentLevel = game.getCurrentLevel()
+        if (isCorrect && currentLevel === 4) {
+          console.log('winner chicken dinner')
+          // cambiar atributo de player a true
+          // save history
+          history.pushAndSaved(game)
+        } else if (isCorrect) {
+          game.continueGame()
+          const didContinue = confirm('do you want to continue?')
+          // innerDisplay.correctScreen(func1, func2)
+          if (didContinue) {
+            innerDisplay.questionScreen(game)
+          } else {
+            history.pushAndSaved(game)
+            location.reload()
+          }
+        } else {
+          history.pushAndSaved(game)
+          innerDisplay.loserScreen(() => location.reload())
+        }
       })
+
       divAnswerButton.append(answerButton)
     }
     innerRoot.append(cardTitle)
@@ -189,17 +189,68 @@ class Display {
     root.append(innerRoot)
   }
 
-  userChosenAnswer() {
-    this.#userAnswer = this.value
+  // ----------------------------
+
+  // -------------------
+  winnerScreen() {
+     this.erase()
+     const root = this.#selectRootReference()
+     const innerRoot = this.#generateInnerRoot()
+
+     const cardTitle = this.#generateCardTitle()
+     cardTitle.classList.add('alert', 'alert-success')
+     cardTitle.innerText = 'CORRECT ANSWER'
+
+     const cardText = this.#generateCardText()
+     cardText.classList.add('fw-bold')
+     cardText.innerText = '¿Would you like to continue or retire with your current points?'
+
+     const divButton = document.createElement('div')
+     divButton.classList.add('d-flex', 'justify-content-between')
+
+     
+     
+
+  innerRoot.append(cardTitle)
+     innerRoot.append(cardText)
+     innerRoot.append(divButton)
+     root.append(innerRoot)
   }
 
-  getUserAnswer() {
-    return this.#userAnswer
+  correctScreen() {
+    this.erase()
+    const root = this.#selectRootReference()
+    const innerRoot = this.#generateInnerRoot()
+
+    const cardTitle = this.#generateCardTitle()
+    cardTitle.classList.add('alert', 'alert-success')
+    cardTitle.innerText = 'CORRECT ANSWER'
+
+    const cardText = this.#generateCardText()
+    cardText.classList.add('fw-bold')
+    cardText.innerText = '¿Would you like to continue or retire with your current points?'
+
+    const divButton = document.createElement('div')
+    divButton.classList.add('d-flex', 'justify-content-between')
+
+    const gameRetireButton = document.createElement('button')
+    gameRetireButton.classList.add('btn', 'btn-danger')
+    gameRetireButton.innerText = 'RETIRE'
+    // gameHistoryButton.addEventListener('click', historyButtonCallback)
+
+    const gameContinueButton = this.#generateContinueButton()
+    gameContinueButton.innerText = 'CONTINUE'
+    // gameContinueButton.addEventListener('click', startButtonCallback)
+
+    divButton.append(gameRetireButton)
+    divButton.append(gameContinueButton)
+    innerRoot.append(cardTitle)
+    innerRoot.append(cardText)
+    innerRoot.append(divButton)
+    root.append(innerRoot)
   }
 
-  winnerScreen() {}
-
-  loserScreen() {
+  loserScreen(callback) {
     this.erase()
     const root = this.#selectRootReference()
     const innerRoot = this.#generateInnerRoot()
@@ -215,6 +266,7 @@ class Display {
     const finishButton = document.createElement('button')
     finishButton.classList.add('btn', 'btn-danger')
     finishButton.innerText = 'FINISH'
+    finishButton.addEventListener('click', callback)
 
     innerRoot.append(cardTitle)
     innerRoot.append(cardText)
@@ -227,9 +279,10 @@ class Display {
   erase() {
     const innerRoot = document.querySelector('#inner-root')
     if (innerRoot) {
-      console.log(innerRoot)
       innerRoot.remove()
     }
   }
 }
 export default Display
+
+const innerDisplay = new Display()

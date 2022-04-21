@@ -11,43 +11,37 @@ import Player from './Player.js'
 import Question from './Question.js'
 
 // GameManager which deals with Game and Display classes
+const questions = [
+  new Question(levelOne),
+  new Question(levelTwo),
+  new Question(levelThree),
+  new Question(levelFour),
+  new Question(levelFive),
+]
+const singleGameInstance = new Game(questions, new Player('player'))
+const singleDisplayInstance = new Display()
 class GameManager {
-  #game
-  #display
-  #history
-  constructor() {
-    this.#game = null
-    this.#display = new Display()
-    this.#history = new History()
-  }
+  constructor() {}
 
-  startNewGame(nickname) {
-    const questions = [
-      new Question(levelOne),
-      new Question(levelTwo),
-      new Question(levelThree),
-      new Question(levelFour),
-      new Question(levelFive),
-    ]
-    this.#game = new Game(questions, new Player(nickname))
-    this.#display.welcomeScreen(this.startGameButtonCallback, this.historyButtonCallback)
+  startNewGame() {
+    singleDisplayInstance.welcomeScreen(this.startGameButtonCallback, this.historyButtonCallback)
   }
 
   continueWithNextQuestion() {
-    this.#game.continueGame()
-    this.#display.continueScreen()
+    // this.#game.continueGame()
+    // this.#display.continueScreen()
   }
 
   startGameButtonCallback() {
-    console.log('game manager start game')
+    singleDisplayInstance.questionScreen(singleGameInstance)
+  }
+  historyButtonCallback() {
+    const history = new History()
+    singleDisplayInstance.historyScreen(history)
   }
 
-  historyButtonCallback() {
-    console.log('game manager history')
-    // this.#display.historyScreen(this.#history)
-    const nHistory = new History()
-    const nDisplay = new Display()
-    nDisplay.historyScreen(nHistory)
+  questionScreenManager() {
+    singleDisplayInstance.questionScreen(singleGameInstance)
   }
 
   retireWithPoints() {
@@ -57,13 +51,6 @@ class GameManager {
     // return user to the main screen (and reset the whole game) or refresh the page
   }
 
-  checkUserAnswer() {
-    // use display to get the userAnswer
-    // const userAnswer = this.#display.getUserAnswer()
-    // const isCorrect = this.#game.validateAnswer(userAnswer)
-    // if (isCorrect) {
-    // }
-  }
   // methods to manage both the ui and the logic
 }
 

@@ -14,8 +14,12 @@ class History {
     return this.#historyArray
   }
 
+  pushAndSaved(game) {
+    this.insertHistory(game)
+    this.saveToLocalStorage(game)
+  }
+
   readPreviousHistory() {
-    // read from localStorage and insert into this.history
     const localStoredObj = localStorage.getItem(History.#key)
     if (localStoredObj) {
       const stringObj = JSON.stringify(localStoredObj)
@@ -25,7 +29,10 @@ class History {
     }
     return []
   }
-  saveToLocalStorage() {
+
+  // take parameter and clone the game
+  saveToLocalStorage(game) {
+    const gameCopy = JSON.parse(JSON.stringify(game))
     const jsonLike = { saved: this.#historyArray }
     const historyArray = JSON.stringify(jsonLike)
     localStorage.setItem(History.#key, historyArray)

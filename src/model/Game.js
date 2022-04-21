@@ -18,11 +18,14 @@ class Game {
   // a method that returns the current state of the game so it can be recreated
   //
 
+  [{}]
   // could take a callback to be use when inside GameManager
   validateAnswer(userInput) {
     this.#player.addAnswerChosen(userInput)
     const userAnswer = this.#player.getCurrentAnswerByLevel(this.#currentLevel)
-    const validAnswer = this.#questions[this.#currentLevel].correctAnswer
+    const validAnswer = this.#questions[this.#currentLevel].getCorrectAnswer()
+    console.log('userAnswer: ', userAnswer)
+    console.log('validAnswer: ', validAnswer)
     return userAnswer === validAnswer
   }
 
@@ -40,7 +43,10 @@ class Game {
 
   // setters
   #nextLevel() {
-    this.#currentLevel += 1
+    if (this.#currentLevel < 4) {
+      this.#currentLevel += 1
+    }
+    console.log(this.#currentLevel)
   }
 
   #increaseScore() {
