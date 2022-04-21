@@ -12,20 +12,28 @@ import History from './model/History.js'
 import Display from './model/Display.js'
 
 function main() {
-  Display.welcomeMessage
-  const one = new Question(levelOne)
-  const two = new Question(levelTwo)
-  const three = new Question(levelThree)
-  const four = new Question(levelFour)
-  const five = new Question(levelFive)
-  const questions = [one, two, three, four, five]
-  const game = new Game(questions)
-  console.log(game.questions[game.currentLevel])
-  game.nextLevel()
-  console.log(game.questions[game.currentLevel])
-  game.nextLevel()
-  console.log(game.questions[game.currentLevel])
-  const h = new History()
+  const displayGame = new Display()
+  const history = new History()
+  history.insertHistory(1)
+  history.insertHistory(2)
+  history.insertHistory(3)
+  history.getHistory()
+
+  // const root = document.getElementById('root')
+  // displayGame.welcomeScreen()
+
+  // const one = new Question(levelOne)
+  // const two = new Question(levelTwo)
+  // const three = new Question(levelThree)
+  // const four = new Question(levelFour)
+  // const five = new Question(levelFive)
+  // const questions = [one, two, three, four, five]
+  // const player = new Player('david')
+  // const game = new Game(questions, player)
+  // const nick = game.getPlayer().getNickname()
+  // const didWin = game.getPlayer().getWon()
+  // console.log(didWin)
+  // console.log(nick)
 }
 
 main()

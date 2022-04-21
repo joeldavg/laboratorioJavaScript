@@ -1,11 +1,12 @@
 //
 class Question {
+  #question
   constructor(questionsByLevel) {
-    this.question = this.getRandomQuestion(questionsByLevel)
+    this.#question = this.getRandomQuestion(questionsByLevel)
   }
 
-  #getQuestions() {
-    return this.question
+  getQuestions() {
+    return this.#question
   }
 
   getRandomQuestion(questionArray) {

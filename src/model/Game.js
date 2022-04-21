@@ -1,6 +1,10 @@
 class Game {
   // questions must be an array of random questions
   // [easy, medium, etc..]
+  #currentLevel
+  #questions
+  #player
+  #score
   constructor(questions, player) {
     // this currentLevel variable is very important
     // it will be use to keep count of both current question and userAnswers
@@ -10,34 +14,52 @@ class Game {
     this.#score = 0
   }
 
+  showScore() {
+    return this.#score
+  }
+
+  getPlayer() {
+    return this.#player
+  }
+
   #nextLevel() {
-    this.currentLevel += 1
+    this.#currentLevel += 1
   }
 
   #increaseScore() {
     const INCREMENT = 100
-    this.score += INCREMENT
+    this.#score += INCREMENT
   }
 
   // here we need to pass value from the input from the DOM
   // and push it to the user answers array
-  validateAnswer(userInput) {
+  // could take a callback to be use when inside GameManager
+  validateAnswer(userInput, correct, incorrect) {
     this.#player.addAnswerChosen(userInput)
-    const userAnswer = this.player.getCurrentAnswerByLevel(this.currentLevel)
-    const validAnswer = this.questions[this.currentLevel].correctAnswer
-    if (userAnswer === validAnswer) {
-      // push user Answer
-      this.player.addAnswerChosen(validAnswer)
-      this.continueGame()
+    const userAnswer = this.#player.getCurrentAnswerByLevel(this.#currentLevel)
+    const validAnswer = this.#questions[this.#currentLevel].correctAnswer
+    if (!(userAnswer === validAnswer)) {
+      incorrect()
     } else {
-      // we return the user to the main page or to the history page and reset the whole game
-      // here the player lost the game
+      correct()
     }
   }
 
-  continueGame() {
-    this.#increaseScore()
-    this.#nextLevel()
+  continueOrRetire(userInput) {
+    if (userInput) {
+      this.continueGame()
+    } else {
+      retireWithCurrentPoints()
+    }
+  }
+
+  retireWithCurrentPoints() {}
+
+  continueGame(boolean) {
+    if (boolean) {
+      this.#increaseScore()
+      this.#nextLevel()
+    }
   }
 }
 

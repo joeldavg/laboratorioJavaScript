@@ -1,4 +1,7 @@
 class Player {
+  #nickname
+  #won
+  #answers
   constructor(nickname) {
     // this.id = id // create a func that generates a random id
     this.#nickname = nickname
@@ -9,12 +12,16 @@ class Player {
   // move this to a generic Class (auxiliary class)
   generateId() {}
 
+  getNickname() {
+    return this.#nickname
+  }
+
   getWon() {
     return this.#won
   }
 
-  setWon(status) {
-    this.#won = status
+  setPlayerVictory() {
+    this.#won = true
   }
 
   addAnswerChosen(answer) {
@@ -24,8 +31,6 @@ class Player {
   getCurrentAnswerByLevel(level) {
     return this.#answers[level]
   }
-
-  // validatePlayer() {}
 }
 
 export default Player
