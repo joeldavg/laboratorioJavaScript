@@ -26,9 +26,7 @@ class History {
     const filterData = this.extractImportantData(game)
     const currentSave = this.readPreviousHistory()
     const newSave = [...currentSave, filterData]
-    console.log('newSave', newSave)
     const historyArray = JSON.stringify(newSave)
-    console.log('stringArr', historyArray)
     localStorage.setItem('savedData', historyArray)
   }
 

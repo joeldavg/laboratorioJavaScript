@@ -14,8 +14,6 @@ class Game {
     this.#player.addAnswerChosen(userInput)
     const userAnswer = this.#player.getCurrentAnswerByLevel(this.#currentLevel)
     const validAnswer = this.#questions[this.#currentLevel].getCorrectAnswer()
-    console.log('userAnswer: ', userAnswer)
-    console.log('validAnswer: ', validAnswer)
     return userAnswer === validAnswer
   }
 
@@ -42,7 +40,6 @@ class Game {
     if (this.#currentLevel < 4) {
       this.#currentLevel += 1
     }
-    console.log(this.#currentLevel)
   }
 
   #increaseScore() {
@@ -54,7 +51,6 @@ class Game {
     this.#score = 0
   }
 
-  // getters
   getCurrentLevel() {
     return this.#currentLevel
   }
