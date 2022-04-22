@@ -19,20 +19,16 @@ const questions = [
   new Question(levelFive),
 ]
 
-let nickname = ''
-while (!nickname) {
-  nickname = prompt('your nickname: ')
-}
-
-const singleGameInstance = new Game(questions, new Player(nickname))
+const singleGameInstance = new Game(questions, new Player('defaultUser'))
 const singleDisplayInstance = new Display()
 class GameManager {
   constructor() {}
 
   startNewGame() {
-    // nickName screen
-    // pass the vale
-    singleDisplayInstance.welcomeScreen(this.startGameButtonCallback, this.historyButtonCallback)
+    // singleDisplayInstance.nickNameScreen(singleGameInstance)
+    singleDisplayInstance.nickNameScreen(singleGameInstance, this.startGameButtonCallback, this.historyButtonCallback)
+
+    // singleDisplayInstance.welcomeScreen(this.startGameButtonCallback, this.historyButtonCallback)
   }
 
   continueWithNextQuestion() {

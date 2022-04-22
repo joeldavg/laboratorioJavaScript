@@ -14,12 +14,6 @@ class Game {
     this.#score = 0
   }
 
-  // IMPORTANT
-  // a method that returns the current state of the game so it can be recreated
-  //
-
-  [{}]
-  // could take a callback to be use when inside GameManager
   validateAnswer(userInput) {
     this.#player.addAnswerChosen(userInput)
     const userAnswer = this.#player.getCurrentAnswerByLevel(this.#currentLevel)
@@ -39,6 +33,15 @@ class Game {
   continueGame() {
     this.#increaseScore()
     this.#nextLevel()
+  }
+
+  fixWinnerValues() {
+    this.#currentLevel = 5
+    this.#score = 500
+  }
+
+  fixLoserLevelDisplay() {
+    this.#currentLevel += 1
   }
 
   // setters

@@ -13,6 +13,10 @@ class Player {
   // move this to a generic Class (auxiliary class)
   generateId() {}
 
+  setNickname(nickname) {
+    this.#nickname = nickname
+  }
+
   getNickname() {
     return this.#nickname
   }

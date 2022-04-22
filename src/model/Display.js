@@ -2,12 +2,6 @@ import History from './History.js'
 
 class Display {
   constructor() {}
-  // methods to manage the ui
-  // they should generate the html markup
-  // those methods take the game instance as an argument
-  // from that it generates the markup
-
-  // we could omit the creation of the user name until he reaches one ending.
   #generateInnerRoot() {
     const innerRoot = document.createElement('div')
     innerRoot.id = 'inner-root'
@@ -105,11 +99,12 @@ class Display {
     tBody.id = 'tbody'
 
     // const data = { score, maxLevel, didWin, nickname }
-    for (let i = 0; i < histories.length; i++) {
+    const orderedArray = histories.sort((a, b) => b.score - a.score)
+    for (let i = 0; i < orderedArray.length; i++) {
       file += `<tr><td>${i + 1}</td>
                       <td>${histories[i].score}</td>
                       <td>${histories[i].nickname}</td>
-                       <td>${histories[i].maxLevel + 1}</td>
+                       <td>${histories[i].maxLevel}</td>
                        <td>${histories[i].didWin}</td></tr>`
     }
 
@@ -169,9 +164,8 @@ class Display {
         const isCorrect = game.validateAnswer(this.value)
         const currentLevel = game.getCurrentLevel()
         if (isCorrect && currentLevel === 4) {
-          console.log('winner chicken dinner')
           game.getPlayer().setPlayerVictory()
-          // save history
+          game.fixWinnerValues()
           history.saveToLocalStorage(game)
           innerDisplay.winnerScreen()
         } else if (isCorrect) {
@@ -185,6 +179,7 @@ class Display {
           }
         } else {
           game.setLoserScore()
+          game.fixLoserLevelDisplay()
           history.saveToLocalStorage(game)
           innerDisplay.loserScreen(() => location.reload())
         }
@@ -250,7 +245,7 @@ class Display {
     root.append(innerRoot)
   }
 
-  nickNameScreen() {
+  nickNameScreen(game, startButtonCallback, historyButtonCallback) {
     this.erase()
     const root = this.#selectRootReference()
     const innerRoot = this.#generateInnerRoot()
@@ -274,6 +269,11 @@ class Display {
 
     const continueButton = this.#generateContinueButton()
     continueButton.innerText = 'CONTINUE'
+    continueButton.addEventListener('click', function () {
+      game.getPlayer().setNickname(nicknameInput.value)
+      console.log(game.getPlayer())
+      innerDisplay.welcomeScreen(startButtonCallback, historyButtonCallback)
+    })
 
     divInput.append(nicknameInput)
     divInput.append(nicknameLabel)
