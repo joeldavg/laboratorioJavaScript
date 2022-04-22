@@ -14,7 +14,7 @@ import { levelFive } from './db/levelFive.js'
 
 function main() {
   // take this out to a file
-  // const gameManager = new GameManger()
+  const gameManager = new GameManger()
   const questions = [
     new Question(levelOne),
     new Question(levelTwo),
@@ -23,11 +23,21 @@ function main() {
     new Question(levelFive),
   ]
   const test1 = new Game(questions, new Player('test1'))
+  const test2 = new Game(questions, new Player('test2'))
   // const test1 = new Game([], new Player("test1"))
   const history = new History()
+  const history2 = new History()
+
+  // const dataFromGame = history.extractImportantData(test1)
+  // console.log(dataFromGame)
+  // history.saveToLocalStorage(test1)
+  // history2.saveToLocalStorage(test2)
+  // history.pushToHistory(test1)
+  // history.pushToHistory(test2)
+  // console.log(history.getHistory())
   // history.saveToLocalStorage(test1)
   // console.log(history.getHistory())
-  // gameManager.startNewGame('david')
+  gameManager.startNewGame('david')
 }
 
 main()

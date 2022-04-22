@@ -54,6 +54,10 @@ class Game {
     this.#score += INCREMENT
   }
 
+  setLoserScore() {
+    this.#score = 0
+  }
+
   // getters
   getCurrentLevel() {
     return this.#currentLevel

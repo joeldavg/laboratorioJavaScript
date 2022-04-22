@@ -87,7 +87,7 @@ class Display {
     this.erase()
     const histories = history.getHistory()
     console.log(histories)
-    let file
+    let file = ''
     const root = this.#selectRootReference()
     const innerRoot = this.#generateInnerRoot()
     const h5 = this.#generateCardTitle()
@@ -104,12 +104,13 @@ class Display {
     const tBody = document.createElement('tbody')
     tBody.id = 'tbody'
 
+    // const data = { score, maxLevel, didWin, nickname }
     for (let i = 0; i < histories.length; i++) {
-      file += `<tr><td>${position}</td>
-                      <td>${histories[i].showScore()}</td>
-                      <td>${histories[i].getPlayer().getNickname()}</td>
-                       <td>${histories[i].getCurrentLevel() + 1}</td>
-                       <td>${histories[i].showScore()}</td></tr>`
+      file += `<tr><td>${i + 1}</td>
+                      <td>${histories[i].score}</td>
+                      <td>${histories[i].nickname}</td>
+                       <td>${histories[i].maxLevel + 1}</td>
+                       <td>${histories[i].didWin}</td></tr>`
     }
 
     const homeButton = document.createElement('button')
@@ -124,9 +125,9 @@ class Display {
     tr.appendChild(th5)
     tHead.appendChild(tr)
     table.appendChild(tHead)
-    if (tBody.childNodes.length > 0) {
-      table.appendChild(tBody)
-    }
+    // if (tBody.childNodes.length > 0) {
+    table.appendChild(tBody)
+    // }
     tBody.innerHTML = file
     innerRoot.appendChild(h5)
     innerRoot.appendChild(table)
@@ -169,22 +170,22 @@ class Display {
         const currentLevel = game.getCurrentLevel()
         if (isCorrect && currentLevel === 4) {
           console.log('winner chicken dinner')
-          // cambiar atributo de player a true
+          game.getPlayer().setPlayerVictory()
           // save history
-          // history.pushAndSaved(game)
+          history.saveToLocalStorage(game)
           innerDisplay.winnerScreen()
         } else if (isCorrect) {
           game.continueGame()
           const didContinue = confirm('do you want to continue?')
-          // innerDisplay.correctScreen(func1, func2)
           if (didContinue) {
             innerDisplay.questionScreen(game)
           } else {
-            history.pushAndSaved(game)
+            history.saveToLocalStorage(game)
             location.reload()
           }
         } else {
-          history.pushAndSaved(game)
+          game.setLoserScore()
+          history.saveToLocalStorage(game)
           innerDisplay.loserScreen(() => location.reload())
         }
       })

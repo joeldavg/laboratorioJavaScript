@@ -1,38 +1,45 @@
-// saves the whole game instance
+// saves the whole gameData instance
 class History {
   #historyArray
-  static #key = 'history'
   constructor() {
     this.#historyArray = []
   }
 
   getHistory() {
-    return this.#historyArray
+    return this.readPreviousHistory()
   }
 
   pushToHistory(game) {
-    this.#historyArray.push(game)
+    const filterData = this.extractImportantData(game)
+    this.#historyArray.push(filterData)
   }
 
   readPreviousHistory() {
-    const localStoredObj = localStorage.getItem(History.#key)
-    if (localStoredObj) {
-      return JSON.parse(localStoredObj)
+    const localStoredArray = localStorage.getItem('savedData')
+    if (localStoredArray) {
+      const parsedArray = JSON.parse(localStoredArray)
+      return parsedArray
     }
     return []
   }
 
   saveToLocalStorage(game) {
-    // console.log('game passed', game)
-    const gameCopy = JSON.parse(JSON.stringify(game))
+    const filterData = this.extractImportantData(game)
     const currentSave = this.readPreviousHistory()
-    const newSave = currentSave.push(gameCopy)
+    const newSave = [...currentSave, filterData]
+    console.log('newSave', newSave)
     const historyArray = JSON.stringify(newSave)
-    localStorage.setItem(History.#key, historyArray)
+    console.log('stringArr', historyArray)
+    localStorage.setItem('savedData', historyArray)
   }
 
-  // emptyLocalStorage() {
-  //   localStorage.clear()
-  // }
+  extractImportantData(game) {
+    const score = game.showScore()
+    const maxLevel = game.getCurrentLevel()
+    const didWin = game.getPlayer().getGameResult()
+    const nickname = game.getPlayer().getNickname()
+    const data = { score, maxLevel, didWin, nickname }
+    return data
+  }
 }
 export default History

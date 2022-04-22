@@ -18,7 +18,13 @@ const questions = [
   new Question(levelFour),
   new Question(levelFive),
 ]
-const singleGameInstance = new Game(questions, new Player('player'))
+
+let nickname = ''
+while (!nickname) {
+  nickname = prompt('your nickname: ')
+}
+
+const singleGameInstance = new Game(questions, new Player(nickname))
 const singleDisplayInstance = new Display()
 class GameManager {
   constructor() {}
