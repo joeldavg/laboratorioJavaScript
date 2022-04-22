@@ -10,7 +10,6 @@ import History from './History.js'
 import Player from './Player.js'
 import Question from './Question.js'
 
-// GameManager which deals with Game and Display classes
 const questions = [
   new Question(levelOne),
   new Question(levelTwo),
@@ -25,19 +24,10 @@ class GameManager {
   constructor() {}
 
   startNewGame() {
-    // singleDisplayInstance.nickNameScreen(singleGameInstance)
     singleDisplayInstance.nickNameScreen(singleGameInstance, this.startGameButtonCallback, this.historyButtonCallback)
-
-    // singleDisplayInstance.welcomeScreen(this.startGameButtonCallback, this.historyButtonCallback)
-  }
-
-  continueWithNextQuestion() {
-    // this.#game.continueGame()
-    // this.#display.continueScreen()
   }
 
   startGameButtonCallback() {
-    //put nicknameScreen here
     singleDisplayInstance.questionScreen(singleGameInstance)
   }
   historyButtonCallback() {
@@ -48,15 +38,6 @@ class GameManager {
   questionScreenManager() {
     singleDisplayInstance.questionScreen(singleGameInstance)
   }
-
-  retireWithPoints() {
-    // const currentSession = this.#game.retireWithCurrentPoints()
-    // this.#history.insertHistory(currentSession)
-    // this.#history.saveToLocalStorage()
-    // return user to the main screen (and reset the whole game) or refresh the page
-  }
-
-  // methods to manage both the ui and the logic
 }
 
 export default GameManager

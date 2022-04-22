@@ -2,16 +2,12 @@ class Player {
   #nickname
   #won
   #answers
+
   constructor(nickname) {
-    // this.id = id // create a func that generates a random id
     this.#nickname = nickname
     this.#won = false
     this.#answers = []
-    // 0
   }
-
-  // move this to a generic Class (auxiliary class)
-  generateId() {}
 
   setNickname(nickname) {
     this.#nickname = nickname

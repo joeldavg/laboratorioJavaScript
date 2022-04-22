@@ -1,4 +1,3 @@
-// saves the whole gameData instance
 class History {
   #historyArray
   constructor() {

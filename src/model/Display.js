@@ -45,7 +45,7 @@ class Display {
     return th
   }
 
-  welcomeScreen(startButtonCallback, historyButtonCallback) {
+  welcomeScreen(startButtonCallback) {
     this.erase()
     const root = this.#selectRootReference()
     const innerRoot = this.#generateInnerRoot()
@@ -55,25 +55,12 @@ class Display {
 
     const cardText = this.#generateCardText()
     cardText.innerText = this.#welcomeMessage()
-
-    const divButton = document.createElement('div')
-    divButton.classList.add('d-flex', 'justify-content-between')
-
-    const gameHistoryButton = document.createElement('button')
-    gameHistoryButton.classList.add('btn', 'btn-info')
-    gameHistoryButton.innerText = 'GAME HISTORY'
-    gameHistoryButton.addEventListener('click', historyButtonCallback)
-
     const startGameButton = this.#generateContinueButton()
     startGameButton.innerText = 'START GAME'
-    // pass a callback from GameManager
     startGameButton.addEventListener('click', startButtonCallback)
-
-    divButton.append(gameHistoryButton)
-    divButton.append(startGameButton)
     innerRoot.append(cardTitle)
     innerRoot.append(cardText)
-    innerRoot.append(divButton)
+    innerRoot.append(startGameButton)
     root.append(innerRoot)
   }
 
@@ -98,14 +85,13 @@ class Display {
     const tBody = document.createElement('tbody')
     tBody.id = 'tbody'
 
-    // const data = { score, maxLevel, didWin, nickname }
     const orderedArray = histories.sort((a, b) => b.score - a.score)
     for (let i = 0; i < orderedArray.length; i++) {
       file += `<tr><td>${i + 1}</td>
                       <td>${histories[i].score}</td>
-                      <td>${histories[i].nickname}</td>
+                      <td>${histories[i].nickname.toUpperCase()}</td>
                        <td>${histories[i].maxLevel}</td>
-                       <td>${histories[i].didWin}</td></tr>`
+                       <td>${histories[i].didWin ? 'Yes' : 'No'}</td></tr>`
     }
 
     const homeButton = document.createElement('button')
@@ -120,9 +106,7 @@ class Display {
     tr.appendChild(th5)
     tHead.appendChild(tr)
     table.appendChild(tHead)
-    // if (tBody.childNodes.length > 0) {
     table.appendChild(tBody)
-    // }
     tBody.innerHTML = file
     innerRoot.appendChild(h5)
     innerRoot.appendChild(table)
@@ -131,7 +115,7 @@ class Display {
   }
 
   #welcomeMessage() {
-    const message = `Este juego consta de 5 niveles, a medida que vas avanzando la dificultad de las preguntas aumentan. Ganas el juego solo si logras reponder todas las preguntas.`
+    const message = `This game consist of 5 levels, as you progress, the difficulty of the questions increases. You win the game only if you manage to answer all the questions.`
     return message
   }
 
@@ -140,10 +124,7 @@ class Display {
     const history = new History()
     const root = this.#selectRootReference()
     const innerRoot = this.#generateInnerRoot()
-
-    // currentLevel
     const currentQuestion = game.getCurrentQuestion()
-    // const question = currentQuestion.getQuestion()
     const questionText = currentQuestion.getQuestionTitle()
     const answersArray = currentQuestion.getAnswersArray()
 
@@ -152,7 +133,6 @@ class Display {
 
     const cardText = this.#generateCardText()
     cardText.classList.add('fw-bold')
-    // console.log(question)
     cardText.innerText = questionText
 
     const divAnswerButton = document.createElement('div')
@@ -193,9 +173,6 @@ class Display {
     root.append(innerRoot)
   }
 
-  // ----------------------------
-
-  // -------------------
   winnerScreen() {
     this.erase()
     const root = this.#selectRootReference()
@@ -262,18 +239,38 @@ class Display {
     nicknameInput.setAttribute('type', 'Text')
     nicknameInput.setAttribute('placeholder', 'nickname')
     nicknameInput.id = 'nickname'
+    nicknameInput.classList.add('form-control')
+    nicknameInput.required = true
 
     const nicknameLabel = document.createElement('label')
     nicknameLabel.setAttribute('for', 'floatingInput')
     nicknameLabel.innerText = 'Nickname'
 
+    const divButton = document.createElement('div')
+    divButton.classList.add('d-flex', 'justify-content-between')
+
+    const gameHistoryButton = document.createElement('button')
+    gameHistoryButton.classList.add('btn', 'btn-info')
+    gameHistoryButton.innerText = 'GAME HISTORY'
+    gameHistoryButton.addEventListener('click', historyButtonCallback)
+
     const continueButton = this.#generateContinueButton()
     continueButton.innerText = 'CONTINUE'
     continueButton.addEventListener('click', function () {
-      game.getPlayer().setNickname(nicknameInput.value)
-      console.log(game.getPlayer())
-      innerDisplay.welcomeScreen(startButtonCallback, historyButtonCallback)
+      if (nicknameInput.value) {
+        game.getPlayer().setNickname(nicknameInput.value)
+        innerDisplay.welcomeScreen(startButtonCallback)
+      } else {
+        divInput.setAttribute('style', 'border: solid red')
+      }
     })
+
+    nicknameInput.addEventListener('click', function () {
+      divInput.removeAttribute('style')
+    })
+
+    divButton.append(gameHistoryButton)
+    divButton.append(continueButton)
 
     divInput.append(nicknameInput)
     divInput.append(nicknameLabel)
@@ -282,7 +279,8 @@ class Display {
     const br = document.createElement('span')
     br.innerHTML = '<br/>'
     innerRoot.append(br)
-    innerRoot.append(continueButton)
+    // innerRoot.append(continueButton)
+    innerRoot.append(divButton)
     root.append(innerRoot)
   }
 

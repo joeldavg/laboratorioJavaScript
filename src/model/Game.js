@@ -1,13 +1,9 @@
 class Game {
-  // questions must be an array of random questions
-  // [easy, medium, etc..]
   #currentLevel
   #questions
   #player
   #score
   constructor(questions, player) {
-    // this currentLevel variable is very important
-    // it will be use to keep count of both current question and userAnswers
     this.#currentLevel = 0
     this.#questions = questions
     this.#player = player
@@ -23,13 +19,11 @@ class Game {
     return userAnswer === validAnswer
   }
 
-  // add this as an event listener to the retire button
   retireWithCurrentPoints() {
     const currentGameInstance = this
     return currentGameInstance
   }
 
-  // add this as an event listener to the continue button
   continueGame() {
     this.#increaseScore()
     this.#nextLevel()
@@ -44,7 +38,6 @@ class Game {
     this.#currentLevel += 1
   }
 
-  // setters
   #nextLevel() {
     if (this.#currentLevel < 4) {
       this.#currentLevel += 1
