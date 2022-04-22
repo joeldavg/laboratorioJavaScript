@@ -30,6 +30,8 @@ class GameManager {
   constructor() {}
 
   startNewGame() {
+    // nickName screen
+    // pass the vale
     singleDisplayInstance.welcomeScreen(this.startGameButtonCallback, this.historyButtonCallback)
   }
 
