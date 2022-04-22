@@ -3,43 +3,36 @@ class History {
   #historyArray
   static #key = 'history'
   constructor() {
-    this.#historyArray = this.readPreviousHistory() || []
+    this.#historyArray = []
   }
 
-  // inserts a Game instance into the array
-  insertHistory(game) {
-    this.#historyArray.push(game)
-  }
   getHistory() {
     return this.#historyArray
   }
 
-  pushAndSaved(game) {
-    this.insertHistory(game)
-    this.saveToLocalStorage(game)
+  pushToHistory(game) {
+    this.#historyArray.push(game)
   }
 
   readPreviousHistory() {
     const localStoredObj = localStorage.getItem(History.#key)
     if (localStoredObj) {
-      const stringObj = JSON.stringify(localStoredObj)
-      const parsedObj = JSON.parse(stringObj)
-      const arraySaved = parsedObj.saved
-      return arraySaved
+      return JSON.parse(localStoredObj)
     }
     return []
   }
 
-  // take parameter and clone the game
   saveToLocalStorage(game) {
+    // console.log('game passed', game)
     const gameCopy = JSON.parse(JSON.stringify(game))
-    const jsonLike = { saved: this.#historyArray }
-    const historyArray = JSON.stringify(jsonLike)
+    const currentSave = this.readPreviousHistory()
+    const newSave = currentSave.push(gameCopy)
+    const historyArray = JSON.stringify(newSave)
     localStorage.setItem(History.#key, historyArray)
   }
 
-  emptyLocalStorage() {
-    localStorage.clear()
-  }
+  // emptyLocalStorage() {
+  //   localStorage.clear()
+  // }
 }
 export default History

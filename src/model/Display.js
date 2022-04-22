@@ -111,6 +111,12 @@ class Display {
                        <td>${histories[i].getCurrentLevel() + 1}</td>
                        <td>${histories[i].showScore()}</td></tr>`
     }
+
+    const homeButton = document.createElement('button')
+    homeButton.classList.add('btn', 'btn-info')
+    homeButton.innerText = 'HOME '
+    homeButton.addEventListener('click', () => location.reload())
+
     tr.appendChild(th1)
     tr.appendChild(th2)
     tr.appendChild(th3)
@@ -124,6 +130,7 @@ class Display {
     tBody.innerHTML = file
     innerRoot.appendChild(h5)
     innerRoot.appendChild(table)
+    innerRoot.appendChild(homeButton)
     root.appendChild(innerRoot)
   }
 
@@ -164,7 +171,8 @@ class Display {
           console.log('winner chicken dinner')
           // cambiar atributo de player a true
           // save history
-          history.pushAndSaved(game)
+          // history.pushAndSaved(game)
+          innerDisplay.winnerScreen()
         } else if (isCorrect) {
           game.continueGame()
           const didContinue = confirm('do you want to continue?')
@@ -193,60 +201,27 @@ class Display {
 
   // -------------------
   winnerScreen() {
-     this.erase()
-     const root = this.#selectRootReference()
-     const innerRoot = this.#generateInnerRoot()
-
-     const cardTitle = this.#generateCardTitle()
-     cardTitle.classList.add('alert', 'alert-success')
-     cardTitle.innerText = 'CORRECT ANSWER'
-
-     const cardText = this.#generateCardText()
-     cardText.classList.add('fw-bold')
-     cardText.innerText = '¿Would you like to continue or retire with your current points?'
-
-     const divButton = document.createElement('div')
-     divButton.classList.add('d-flex', 'justify-content-between')
-
-     
-     
-
-  innerRoot.append(cardTitle)
-     innerRoot.append(cardText)
-     innerRoot.append(divButton)
-     root.append(innerRoot)
-  }
-
-  correctScreen() {
     this.erase()
     const root = this.#selectRootReference()
     const innerRoot = this.#generateInnerRoot()
 
-    const cardTitle = this.#generateCardTitle()
+    const cardTitle = document.createElement('h6')
+    cardTitle.classList.add('card-title')
     cardTitle.classList.add('alert', 'alert-success')
-    cardTitle.innerText = 'CORRECT ANSWER'
+    cardTitle.innerText = `CONGRATULATIONS YOU WON THE GAME`
 
     const cardText = this.#generateCardText()
     cardText.classList.add('fw-bold')
-    cardText.innerText = '¿Would you like to continue or retire with your current points?'
+    cardText.innerText = 'You have sucessfully answers all questions'
 
-    const divButton = document.createElement('div')
-    divButton.classList.add('d-flex', 'justify-content-between')
+    const homeButton = document.createElement('button')
+    homeButton.classList.add('btn', 'btn-info')
+    homeButton.innerText = 'HOME '
+    homeButton.addEventListener('click', () => location.reload())
 
-    const gameRetireButton = document.createElement('button')
-    gameRetireButton.classList.add('btn', 'btn-danger')
-    gameRetireButton.innerText = 'RETIRE'
-    // gameHistoryButton.addEventListener('click', historyButtonCallback)
-
-    const gameContinueButton = this.#generateContinueButton()
-    gameContinueButton.innerText = 'CONTINUE'
-    // gameContinueButton.addEventListener('click', startButtonCallback)
-
-    divButton.append(gameRetireButton)
-    divButton.append(gameContinueButton)
     innerRoot.append(cardTitle)
     innerRoot.append(cardText)
-    innerRoot.append(divButton)
+    innerRoot.append(homeButton)
     root.append(innerRoot)
   }
 
@@ -274,7 +249,41 @@ class Display {
     root.append(innerRoot)
   }
 
-  continueScreen() {}
+  nickNameScreen() {
+    this.erase()
+    const root = this.#selectRootReference()
+    const innerRoot = this.#generateInnerRoot()
+
+    const cardText = this.#generateCardText()
+    cardText.classList.add('fw-bold')
+    cardText.innerText = 'Enter your Nickname:'
+
+    const divInput = document.createElement('div')
+    divInput.classList.add('form-floating', 'mb-3', 'd-inline-flex')
+
+    const nicknameInput = document.createElement('input')
+    nicknameInput.classList.add('form-control')
+    nicknameInput.setAttribute('type', 'Text')
+    nicknameInput.setAttribute('placeholder', 'nickname')
+    nicknameInput.id = 'nickname'
+
+    const nicknameLabel = document.createElement('label')
+    nicknameLabel.setAttribute('for', 'floatingInput')
+    nicknameLabel.innerText = 'Nickname'
+
+    const continueButton = this.#generateContinueButton()
+    continueButton.innerText = 'CONTINUE'
+
+    divInput.append(nicknameInput)
+    divInput.append(nicknameLabel)
+    innerRoot.append(cardText)
+    innerRoot.append(divInput)
+    const br = document.createElement('span')
+    br.innerHTML = '<br/>'
+    innerRoot.append(br)
+    innerRoot.append(continueButton)
+    root.append(innerRoot)
+  }
 
   erase() {
     const innerRoot = document.querySelector('#inner-root')

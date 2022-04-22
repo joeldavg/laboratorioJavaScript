@@ -33,6 +33,7 @@ class GameManager {
   }
 
   startGameButtonCallback() {
+    //put nicknameScreen here
     singleDisplayInstance.questionScreen(singleGameInstance)
   }
   historyButtonCallback() {
